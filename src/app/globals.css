@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: 'GeistMono-Regular';
+    font-weight: 100 700;
+    font-style: normal;
+    font-display: swap;
+    src: url('/fonts/GeistMono-Regular.woff2') format('woff2');
+  }
+}
+
+@layer utilities {
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    border-radius: 100vh;
+    background: #fff;
+    margin-top: 10%;
+  }
+}
+
+body {
+  font-family: 'GeistMono-Regular';
+  min-height: 100vh;
+  background-size: cover;
+  text-transform: lowercase;
+  background: linear-gradient(to bottom, #2a81d5, #70aae2, #6fa9e1, #2a81d5);
+  color: #fff;
+}
+
+.selectButton {
+  background: linear-gradient(to right, #f15e5f, #2a81d5);
+}
+
+.selectButton:hover {
+  background: linear-gradient(to left, #f15e5f, #2a81d5);
+}
+
+.button {
+  cursor: pointer;
+}
+
+.button .normal {
+  display: block;
+}
+
+.button .press {
+  display: none;
+}
+
+.button:hover .press {
+  display: block;
+}
+
+.button:hover .normal {
+  display: none;
+}
