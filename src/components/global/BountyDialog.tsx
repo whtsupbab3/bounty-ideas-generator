@@ -230,6 +230,8 @@ const BountyDialog = ({
               } catch (error) {
                 toast.error("Failed!");
                 return;
+              } finally {
+                setIsSubmiting(false);
               }
             }}
           >
