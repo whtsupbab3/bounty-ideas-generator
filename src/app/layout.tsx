@@ -13,7 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const queryClient = new QueryClient();
 
-export const config = getDefaultConfig({
+const config = getDefaultConfig({
   appName: "My RainbowKit App",
   projectId: "YOUR_PROJECT_ID",
   chains: [degen, arbitrum, base],
