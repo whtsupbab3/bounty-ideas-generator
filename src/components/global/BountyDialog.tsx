@@ -82,13 +82,15 @@ const BountyDialog = ({
       maxWidth="xs"
       fullWidth
       PaperProps={{
-        className: `bg-poidhBlue/90 text-white ${
+        className: `${
           isSubmiting ? "animate-pulse" : ""
         }`,
         style: {
           borderRadius: "30px",
           color: "white",
           border: "1px solid #D1ECFF",
+          backgroundColor: "#2a81d5",
+          opacity: 0.9,
         },
       }}
     >
