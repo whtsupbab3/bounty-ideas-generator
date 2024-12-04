@@ -14,7 +14,7 @@ const BountiesList = ({ bounties }: { bounties: Bounty[] }) => {
         bounty={selectedBounty}
         onClose={() => setSelectedBounty(null)}
       />
-      <div className="flex flex-wrap justify-center gap-4 mt-8 break-words">
+      <div className="flex flex-wrap justify-center gap-4 mt-8 mb-16 break-words">
         {bounties.length > 0
           ? bounties.map((bounty, index) => (
               <BountyItem
