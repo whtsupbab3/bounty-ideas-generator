@@ -11,6 +11,12 @@ const GenerateBountyForm = ({
 }) => {
   const [bountyIdea, setBountyIdea] = useState<string>("");
 
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleIdeaSubmit(bountyIdea);
+    }
+  };
+  
   return (
     <div className="flex flex-col items-center justify-items-center m-0 p-8 pt-10 pb-20 gap-16 sm:p-20">
       <h3>bounty ideas generator</h3>
@@ -20,6 +26,7 @@ const GenerateBountyForm = ({
           type="text"
           value={bountyIdea}
           onChange={(e) => setBountyIdea(e.target.value)}
+          onKeyDown={handleKeyPress}
           className="border bg-transparent border-[#D1ECFF] py-2 px-2 rounded-md mb-4"
           maxLength={150}
         />

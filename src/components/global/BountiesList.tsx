@@ -1,12 +1,12 @@
 import { useState } from "react";
 import BountyDialog from "./BountyDialog";
+import { getRandomBounties } from "@/utils/bountyHelper";
 
-const BountiesList = ({
-  bounties,
-}: {
-  bounties: Bounty[];
-}) => {
+const BOUNTIES_NUM = parseInt(process.env.NEXT_PUBLIC_BOUNTIES_NUM || "3");
+
+const BountiesList = ({ bounties }: { bounties: Bounty[] }) => {
   const [selectedBounty, setSelectedBounty] = useState<Bounty | null>(null);
+  const mockBounties = getRandomBounties(BOUNTIES_NUM);
   return (
     <>
       <BountyDialog
@@ -15,13 +15,21 @@ const BountiesList = ({
         onClose={() => setSelectedBounty(null)}
       />
       <div className="flex flex-wrap justify-center gap-4 mt-8 break-words">
-        {bounties.map((bounty, index) => (
-          <BountyItem
-            key={index}
-            bounty={bounty}
-            onBountySelect={setSelectedBounty}
-          />
-        ))}
+        {bounties.length > 0
+          ? bounties.map((bounty, index) => (
+              <BountyItem
+                key={index}
+                bounty={bounty}
+                onBountySelect={setSelectedBounty}
+              />
+            ))
+          : mockBounties.map((bounty, index) => (
+              <BountyItem
+                key={index}
+                bounty={bounty}
+                onBountySelect={setSelectedBounty}
+              />
+            ))}
       </div>
     </>
   );
@@ -40,12 +48,18 @@ const BountyItem = ({
         bounty.isGenerating && "animate-pulse"
       }`}
     >
-      <span className="text-center mb-4 h-12">{bounty.title}</span>
-      <div className="border-2 border-dashed border-white p-4 rounded-xl overflow-auto h-56">
+      <span className="text-center mb-4 h-12" suppressHydrationWarning>
+        {bounty.title}
+      </span>
+      <div
+        className="border-2 border-dashed border-white p-4 rounded-xl overflow-auto h-56"
+        suppressHydrationWarning
+      >
         {bounty.description}
       </div>
       <div className="flex mt-auto w-[100%]">
         <button
+          disabled={bounty.isGenerating}
           onClick={() => onBountySelect(bounty)}
           className="px-6 py-1 ml-auto  mt-[10px] border-[1px] rounded-md selectButton cursor-pointer"
         >

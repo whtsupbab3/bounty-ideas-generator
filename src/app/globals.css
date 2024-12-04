@@ -62,3 +62,34 @@ body {
 .button:hover .normal {
   display: none;
 }
+
+.button2 {
+  cursor: pointer;
+}
+
+.button2 .normal2 {
+  display: block;
+}
+
+.button2 .press2 {
+  display: none;
+}
+
+.button2:hover .press2 {
+  display: block;
+}
+
+.button2:hover .normal2 {
+  display: none;
+}
+
+.Toastify__toast-theme--light {
+  background-color: rgba(209, 236, 255, 0.2) !important;
+  border: 1px solid white !important;
+  color: white !important;
+  backdrop-filter: blur(4px) !important;
+}
+
+.Toastify__close-button > svg {
+  fill: white !important;
+}
