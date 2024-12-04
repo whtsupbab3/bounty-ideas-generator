@@ -27,6 +27,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <title>poidh ai</title>
+      <meta name="description" content="AI-powered bounty generator inspired by poidh." />
       <body>
         <ToastContainer
           autoClose={2000} // 2 seconds
