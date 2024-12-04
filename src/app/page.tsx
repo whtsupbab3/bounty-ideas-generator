@@ -1,58 +1,68 @@
-"use client";
+'use client';
 
-import BountiesList from "@/components/global/BountiesList";
-import BountyDialog from "@/components/global/BountyDialog";
-import { Bounty } from "@/components/global/BountyItem";
+import BountiesList from '@/components/global/BountiesList';
 import GenerateBountyForm from "@/components/global/GenerateBountyForm";
-import { useEffect, useState } from "react";
+import { useState } from 'react';
+import { sendBounty, generateRandomBounties } from '@/utils/helper';
+import { toast } from 'react-toastify';
+
+const BOUNTIES_NUM = parseInt(process.env.NEXT_PUBLIC_BOUNTIES_NUM || '3');
+const PREGENERATED_BOUNTIES = generateRandomBounties(BOUNTIES_NUM);
+const LOADING_BOUNTIES = Array(BOUNTIES_NUM).fill('').map(u => ({
+  title: '',
+  description: '',
+  isGenerating: true,
+}));
 
 export default function Home() {
-  const [selectedBounty, setSelectedBounty] = useState<Bounty>();
-  const [dialogIsOpen, setDialogIsOpen] = useState<boolean>(false);
-  const [bounties, setBounties] = useState<Bounty[]>([]);
-  
-  const handleIdeaSubmit = async (bountyIdea: string) => {
-    const res = await fetch('/api/generateBounty', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ bountyIdea }),
-    });
+  const [bounties, setBounties] = useState<Bounty[]>(PREGENERATED_BOUNTIES || []);
 
-    if (!res.ok) {
-        throw new Error(`Error: ${res.status}`);
+  const updateBounty = async (bountyIdea: string) => {
+    try {
+      const generatedBounty: Bounty = await sendBounty(bountyIdea);
+
+      setBounties((prevBounties) => {
+        const updatedBounties = [...prevBounties];
+        const index = updatedBounties.findIndex((b) => b.isGenerating);
+        if (index !== -1) {
+          updatedBounties[index] = generatedBounty;
+        }
+        return updatedBounties;
+      });
+    } catch (error) {
+      console.error('Error generating bounty:', error);
+    }
+  };
+
+  const handleIdeaSubmit = async (bountyIdea: string) => {
+    if (!bountyIdea) {
+      toast.error(
+        'Please fill in all fields.'
+      );
+      return;
     }
 
-    const data = await res.json();
-    const generatedBounty: Bounty = JSON.parse(data.choices[0].message.content);
-    setBounties((bs) => [...bs, generatedBounty]);
-    console.log(generatedBounty)
-  };
+    setBounties(LOADING_BOUNTIES);
 
-  const handleBountySelect = (selectedBounty: Bounty) => {
-    setDialogIsOpen(true);
-    setSelectedBounty(selectedBounty);
-    console.log(selectedBounty)
-  };
-
-  const handleCloseBountyDialog = () => {
-    setSelectedBounty(undefined);
-    setDialogIsOpen(false);
+    try {
+      for (let i = 0; i < BOUNTIES_NUM; i++) {
+        updateBounty(bountyIdea);
+      }
+    } catch (error) {
+      console.error("Failed to generate bounty:", error);
+      setBounties((prevBounties) => {
+        const updatedBounties = [...prevBounties];
+        updatedBounties.pop();
+        return [...updatedBounties];
+      });
+    }
   };
 
   return (
     <>
-      <div className="flex flex-col items-center justify-items-center m-0 p-8 pt-0 pb-20 gap-16 sm:p-20">
-        <h3 className="mt-[10%]">bounty ideas generator</h3>
-        <GenerateBountyForm handleIdeaSubmit={handleIdeaSubmit}/>
-      </div>
-      <div className="border-dashed border-t-[1px] h-1 border-white mx-4"/>
-      {bounties.length !== 0 &&
-        <BountiesList bounties={bounties} onBountySelect={handleBountySelect} />
-      }
-      <BountyDialog isOpen={dialogIsOpen} selectedBounty={selectedBounty} handleClose={handleCloseBountyDialog} />
+      <GenerateBountyForm handleIdeaSubmit={handleIdeaSubmit} />
+      <div className='border-dashed border-t-[1px] h-1 border-white mx-4' />
+      <BountiesList bounties={bounties} />
     </>
   );
 }
-

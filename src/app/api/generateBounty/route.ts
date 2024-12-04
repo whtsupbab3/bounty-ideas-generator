@@ -23,7 +23,7 @@ export async function POST(req: Request) {
                     }
                   ],
                 max_tokens: 100, 
-                temperature: 0.7, 
+                temperature: 1, 
                 response_format: { "type": "json_object" },
             }),
         });
@@ -33,7 +33,7 @@ export async function POST(req: Request) {
         }
 
         const data = await response.json();
-        return Response.json(data);
+        return Response.json(data.choices[0].message.content);
     } catch (error) {
         console.error('Error communicating with OpenAI API:', error);
         return Response.error();
