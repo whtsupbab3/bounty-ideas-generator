@@ -14,8 +14,8 @@ import "react-toastify/dist/ReactToastify.css";
 const queryClient = new QueryClient();
 
 const config = getDefaultConfig({
-  appName: "My RainbowKit App",
-  projectId: "YOUR_PROJECT_ID",
+  appName: "poidh ai",
+  projectId: "15cd18671afa3d4e8582994c04df9d89",
   chains: [degen, arbitrum, base],
   ssr: true,
 });
