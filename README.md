@@ -1,5 +1,3 @@
-## Demo: [https://bounty-ideas-generator-production.up.railway.app/](https://bounty-ideas-generator-production.up.railway.app/)
-
 ## Prerequisites
 
 Before running this project, ensure you have:
